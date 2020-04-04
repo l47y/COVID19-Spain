@@ -7,6 +7,11 @@ shinyUI(fluidPage(
   includeCSS("www/styles.css"),
   useShinyjs(),
   theme = shinytheme("cerulean"),
+  
+  fluidRow(
+    tags$div(class="app_header", "Some description here")
+  ),
+  
   fluidRow(
     column(
       2, 
@@ -25,13 +30,15 @@ shinyUI(fluidPage(
         "Elige estadística",
         choices=c("Acumulado", "Cambio absoluto", "Cambio relativo")
       ),
-      selectInput(
-        "ccaa", 
-        "Filtro CCAA", 
-        choices = c("Andalucía","Aragón","Asturias","Baleares","C. Valenciana","Canarias","Cantabria","Castilla y León",
-                        "Castilla-La Mancha","Cataluña","Ceuta","Extremadura","Galicia","La Rioja","Madrid","Melilla","Murcia",
-                        "Navarra","País Vasco", "Total"),
-        multiple = TRUE
+      hidden(
+        selectInput(
+          "ccaa", 
+          "Filtro CCAA", 
+          choices = c("Andalucía","Aragón","Asturias","Baleares","C. Valenciana","Canarias","Cantabria","Castilla y León",
+                          "Castilla-La Mancha","Cataluña","Ceuta","Extremadura","Galicia","La Rioja","Madrid","Melilla","Murcia",
+                          "Navarra","País Vasco"),
+          multiple = TRUE
+        )
       )
     ),
     column(
