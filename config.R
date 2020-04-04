@@ -1,5 +1,11 @@
 
-descr_header_text <- "Description goes here"
+header_es <- "COVID-19 en España"
+header_en <- "COVID-19 in Spain"
+
+descr1_es <- "Créditos para los datos:"
+descr1_en <- "Credits for the data:"
+descr2_es <- "Esta app Shiny:"
+descr2_en <- "This Shiny app:"
 
 choose_data_label_es <- "Elige datos"
 choose_data_label_en <- "Choose data"

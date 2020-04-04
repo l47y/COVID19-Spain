@@ -29,6 +29,9 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$lan_en, {
     current_lan("EN")
+    html("app_header", html = header_en)
+    html("app_descr1", html = descr1_en)
+    html("app_descr2", html = descr2_en)
     updateSelectInput(session, "choose_data", label = choose_data_label_en, choices = choose_data_choices_en)
     updateSelectInput(session, "total_or_ccaa", label = total_or_ccaa_label_en, choices = total_or_ccaa_choices_en)
     updateSelectInput(session, "stat", label = stat_label_en, choices = stat_choices_en)
@@ -37,6 +40,9 @@ shinyServer(function(input, output, session) {
   
   observeEvent(input$lan_es, {
     current_lan("ES")
+    html("app_header", html = header_es)
+    html("app_descr1", html = descr1_es)
+    html("app_descr2", html = descr2_es)
     updateSelectInput(session, "choose_data", label = choose_data_label_es, choices = choose_data_choices_es)
     updateSelectInput(session, "total_or_ccaa", label = total_or_ccaa_label_es, choices = total_or_ccaa_choices_es)
     updateSelectInput(session, "stat", label = stat_label_es, choices = stat_choices_es)

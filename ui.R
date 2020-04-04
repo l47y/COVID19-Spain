@@ -13,7 +13,7 @@ shinyUI(fluidPage(
   fluidRow(
     column(
       10,
-      tags$div(class="app_header", "COVID-19 in Spain")
+      tags$div(id="app_header", header_es, style="font-size: 48px;")
     ), 
     column(
       2,
@@ -30,8 +30,25 @@ shinyUI(fluidPage(
   ),
   
   fluidRow(
-    tags$div(class="app_descr1", tags$a(href="https://github.com/datadista/datasets", "Credits for the data go the contributors of this repo")),
-    tags$div(class="app_descr2", tags$a(href="https://github.com/l47y/COVID19-Spain", "Repo of this Shiny app"))
+    fluidRow(
+      column(2, 
+         tags$div(id="app_descr1", descr1_es, style="font-size: 24px; text-align: right;")
+      ),
+      column(2, 
+         tags$div(id="app_descr1_link", tags$a(href="https://github.com/l47y/COVID19-Spain", "click"), 
+                  style="font-size: 24px; text-align_left;")
+      )
+    ),
+    fluidRow(
+      column(2, 
+             tags$div(id="app_descr2", descr2_es, style="font-size: 24px; text-align: right;")
+      ),
+      column(2, 
+             tags$div(id="app_descr2_link", tags$a(href="https://github.com/l47y/COVID19-Spain", "click"), 
+                      style="font-size: 24px; text-align:left")
+      )
+    ),
+    style="margin-bottom:4%; margin-top:1%"
   ),
   
   fluidRow(
