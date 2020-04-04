@@ -1,9 +1,11 @@
 library(shiny)
 library(shinythemes)
 library(plotly)
+library(shinyjs)
 
 shinyUI(fluidPage(
   includeCSS("www/styles.css"),
+  useShinyjs(),
   theme = shinytheme("cerulean"),
   fluidRow(
     column(
@@ -22,6 +24,14 @@ shinyUI(fluidPage(
         "stat", 
         "Elige estadística",
         choices=c("Acumulado", "Cambio absoluto", "Cambio relativo")
+      ),
+      selectInput(
+        "ccaa", 
+        "Filtro CCAA", 
+        choices = c("Andalucía","Aragón","Asturias","Baleares","C. Valenciana","Canarias","Cantabria","Castilla y León",
+                        "Castilla-La Mancha","Cataluña","Ceuta","Extremadura","Galicia","La Rioja","Madrid","Melilla","Murcia",
+                        "Navarra","País Vasco", "Total"),
+        multiple = TRUE
       )
     ),
     column(

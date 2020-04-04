@@ -13,6 +13,15 @@ shinyServer(function(input, output, session) {
   )
   my_data <- join_data(data_list)
   
+  shinyjs::hide("ccaa")
+  
+  observe ({
+    if (input$total_or_ccaa != "Total") {
+      shinyjs::show("ccaa")
+    } else {
+      shinyjs::hide("ccaa")
+    }
+  })
   
   # get_data <- reactive({
   #   if (input$choose_data == "Casos") {tmp <- data_list$casos} 
@@ -24,6 +33,9 @@ shinyServer(function(input, output, session) {
   
   output$mainplot <- renderPlotly({
     tmp <- copy(my_data)
+    if (!is.null(input$ccaa)) {
+      tmp <- tmp[tmp$CCAA %in% input$ccaa]
+    }
     print(tmp)
     if (input$total_or_ccaa == "Total") {
       tmp <- tmp[CCAA == "Total", ]
