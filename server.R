@@ -36,6 +36,7 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "total_or_ccaa", label = total_or_ccaa_label_en, choices = total_or_ccaa_choices_en)
     updateSelectInput(session, "stat", label = stat_label_en, choices = stat_choices_en)
     updateSelectInput(session, "ccaa", label = ccaa_label_en)
+    updateCheckboxInput(session, "relative_change", label = relative_change_label_en)
   })
   
   observeEvent(input$lan_es, {
@@ -47,21 +48,40 @@ shinyServer(function(input, output, session) {
     updateSelectInput(session, "total_or_ccaa", label = total_or_ccaa_label_es, choices = total_or_ccaa_choices_es)
     updateSelectInput(session, "stat", label = stat_label_es, choices = stat_choices_es)
     updateSelectInput(session, "ccaa", label = ccaa_label_es)
+    updateCheckboxInput(session, "relative_change", label = relative_change_label_es)
   })
   
   get_plot_infos <- reactive({
     if (current_lan() == "ES") {
-      if (input$stat %in% c("Cambio absoluto", "Absolute change")) {yaxis <- "Cambio del número absoluto respecto al día anterior"}
-      else if (input$stat %in% c("Cambio relativo", "Relative change")) { yaxis <- "% cambio respecto al día anterior"}
-      else {yaxis <- "Número acumulado" } 
+      my_choices <- choose_data_choices_es
+      my_choices_stat <- stat_choices_es
+      if (input$stat == my_choices_stat[2]) {
+        yaxis <- "Casos nuevos por día"
+        title <- paste0("Nuevos ", input$choose_data, " por día")
+      } else {
+        yaxis <- "Número acumulado" 
+        title <- paste0("Número acumulado de ", input$choose_data, " por día")
+      } 
+      if (input$relative_change == TRUE) { 
+        yaxis <- "Porcentaje de cambio respecto al día anterior"
+        title <- paste0("Porcentaje de cambio de ", input$choose_data, " respecto al día anterior")
+      }
       xaxis <- "Fecha"
-      title <- paste0(input$stat, " de ", input$choose_data, " por fecha")
     } else {
-      if (input$stat %in% c("Cambio absoluto", "Absolute change")) {yaxis <- "Absolute change with respect to previous day"}
-      else if (input$stat %in% c("Cambio relativo", "Relative change")) { yaxis <- "% change with respect to previous day"}
-      else {yaxis <- "Absolute number" } 
+      my_choices <- choose_data_choices_en
+      my_choices_stat <- stat_choices_en
+      if (input$stat == my_choices_stat[2]) {
+        yaxis <- "New cases per day"
+        title <- paste0("New ", input$choose_data, " per day")
+      } else {
+        yaxis <- "Acumulative number" 
+        title <- paste0("Acumulative of ", input$choose_data, " per day")
+      } 
+      if (input$relative_change == TRUE) { 
+        yaxis <- "Porcentage of change with respect to previous day"
+        title <- paste0("Porcentage of change of ", input$choose_data, " per day")
+      }
       xaxis <- "Day"
-      title <- paste0(input$stat, " of ", input$choose_data, " per day")
     }
     list(title=title, yaxis=yaxis, xaxis=xaxis)
   })
@@ -77,26 +97,40 @@ shinyServer(function(input, output, session) {
         tmp <- tmp[tmp$CCAA %in% input$ccaa]
       }
     }
-    if (input$choose_data %in% c("Fallecidos", "Deaths")) {my_col <- "total_falle"}
-    else if (input$choose_data %in% c("Casos", "Cases")) {my_col <- "total_casos"}
-    else if (input$choose_data %in% c("Hospitalizados", "Hospitalized")) {my_col <- "total_hospi"}
-    else if (input$choose_data %in% c("Altas", "Recovered")) {my_col <- "total_altas"}
-    else if (input$choose_data %in% c("Activos", "Actives")) {my_col <- "activos"}
+    
+    if (current_lan() == "ES") {
+      my_choices <- choose_data_choices_es
+      my_choices_stat <- stat_choices_es
+    }
+    else {
+      my_choices <- choose_data_choices_en
+      my_choices_stat <- stat_choices_en
+    }
+    
+    if (input$choose_data == my_choices[1]) {my_col <- "total_casos"}
+    else if (input$choose_data == my_choices[2]) {my_col <- "activos"}
+    else if (input$choose_data == my_choices[3]) {my_col <- "total_altas"}
+    else if (input$choose_data == my_choices[4]) {my_col <- "total_falle"}
+    else if (input$choose_data == my_choices[5]) {my_col <- "total_hospi"}
     
     tmp[, total := tmp[[my_col]]]
     
     tmp[, lag_total := c(NA, total[-.N]), by=CCAA]
     tmp[, diff := total - lag_total] 
-    tmp[, diff_rel := ((total / lag_total) * 100) - rep(100, nrow(tmp))]
-    if (input$stat %in% c("Cambio absoluto", "Absolute change")) {
-      show_col <- "diff"
-      yaxis <- "Cambio del número absoluto respecto al día anterior"
-    } else if (input$stat %in% c("Cambio relativo", "Relative change")) {
-      show_col <- "diff_rel"
-      yaxis <- "% cambio respecto al día anterior"
+    tmp[, diff_lag := c(NA, diff[-.N]), by=CCAA]
+    if (input$stat == my_choices_stat[2]) {
+      tmp[, diff_rel := ((diff / diff_lag) * 100) - rep(100, nrow(tmp))]
     } else {
-      show_col <- "total"
-      yaxis <- "Número acumulado"
+      tmp[, diff_rel := ((total / lag_total) * 100) - rep(100, nrow(tmp))]
+    }
+    if (input$relative_change == TRUE) {
+      show_col <- "diff_rel"
+    } else {
+      if (input$stat == my_choices_stat[2]) {
+        show_col <- "diff"
+      } else {
+        show_col <- "total"
+      }
     }
     infos <- get_plot_infos()
     plot_ly(x = tmp$fecha, y = tmp[[show_col]], color = tmp$CCAA, type="bar") %>% 

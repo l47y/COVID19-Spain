@@ -67,7 +67,12 @@ shinyUI(fluidPage(
       selectInput(
         "stat", 
         stat_label_es,
-        stat_choices_es,
+        stat_choices_es
+      ),
+      checkboxInput(
+        "relative_change",
+        label = relative_change_label_es
+        
       ),
       hidden(
         selectInput(
