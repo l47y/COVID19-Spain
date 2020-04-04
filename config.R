@@ -21,3 +21,6 @@ ccaa_label_en <- "Filter CCAA"
 
 choose_lan_label_es <- "Elige idioma"
 choose_lan_choices_es <- c("ES", "EN")
+
+descr_en <- paste0("Credits go to the contributors of https://github.com/datadista/datasets for updating the daily data. ",
+                   "Github repo for this app: https://github.com/l47y/COVID19-Spain")

@@ -13,7 +13,7 @@ shinyUI(fluidPage(
   fluidRow(
     column(
       10,
-      tags$div(class="app_header", "Some description here")
+      tags$div(class="app_header", "COVID-19 in Spain")
     ), 
     column(
       2,
@@ -23,10 +23,15 @@ shinyUI(fluidPage(
         status = "primary",
         size = "normal",
         direction = "horizontal",
-        fullwidth = TRUE
+        fullwidth =FALSE
       )
      
     )
+  ),
+  
+  fluidRow(
+    tags$div(class="app_descr1", tags$a(href="https://github.com/datadista/datasets", "Credits for the data go the contributors of this repo")),
+    tags$div(class="app_descr2", tags$a(href="https://github.com/l47y/COVID19-Spain", "Repo of this Shiny app"))
   ),
   
   fluidRow(
