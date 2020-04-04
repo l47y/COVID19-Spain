@@ -11,7 +11,7 @@ shinyUI(fluidPage(
       selectInput(
         "choose_data", 
         "Elige datos", 
-        choices = c("Casos", "Altas", "Hospitalizados", "Fallecidos")
+        choices = c("Casos", "Altas", "Hospitalizados", "Fallecidos", "Activos")
       ),
       selectInput(
         "total_or_ccaa",
