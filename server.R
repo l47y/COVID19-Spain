@@ -2,6 +2,7 @@ library(data.table)
 library(magrittr)
 library(readr)
 source("helpers.R")
+source("config.R")
 
 shinyServer(function(input, output, session) {
   
@@ -21,6 +22,20 @@ shinyServer(function(input, output, session) {
     } else {
       shinyjs::hide("ccaa")
     }
+  })
+  
+  observeEvent(input$lan_en, {
+    updateSelectInput(session, "choose_data", label = choose_data_label_en, choices = choose_data_choices_en)
+    updateSelectInput(session, "total_or_ccaa", label = total_or_ccaa_label_en, choices = total_or_ccaa_choices_en)
+    updateSelectInput(session, "stat", label = stat_label_en, choices = stat_choices_en)
+    updateSelectInput(session, "ccaa", label = ccaa_label_en)
+  })
+  
+  observeEvent(input$lan_es, {
+    updateSelectInput(session, "choose_data", label = choose_data_label_es, choices = choose_data_choices_es)
+    updateSelectInput(session, "total_or_ccaa", label = total_or_ccaa_label_es, choices = total_or_ccaa_choices_es)
+    updateSelectInput(session, "stat", label = stat_label_es, choices = stat_choices_es)
+    updateSelectInput(session, "ccaa", label = ccaa_label_es)
   })
   
   # get_data <- reactive({
