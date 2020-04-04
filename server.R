@@ -25,6 +25,8 @@ shinyServer(function(input, output, session) {
     }
   })
   
+ 
+  
   observeEvent(input$lan_en, {
     current_lan("EN")
     updateSelectInput(session, "choose_data", label = choose_data_label_en, choices = choose_data_choices_en)
@@ -53,21 +55,21 @@ shinyServer(function(input, output, session) {
       else if (input$stat %in% c("Cambio relativo", "Relative change")) { yaxis <- "% change with respect to previous day"}
       else {yaxis <- "Absolute number" } 
       xaxis <- "Day"
-      paste0(input$stat, " of ", input$choose_data, " per day")
+      title <- paste0(input$stat, " of ", input$choose_data, " per day")
     }
     list(title=title, yaxis=yaxis, xaxis=xaxis)
   })
   
   output$mainplot <- renderPlotly({
     tmp <- copy(my_data)
-    if (!is.null(input$ccaa)) {
-      tmp <- tmp[tmp$CCAA %in% input$ccaa]
-    }
-    print(tmp)
+ 
+    
     if (input$total_or_ccaa == "Total") {
       tmp <- tmp[CCAA == "Total", ]
     } else {
-      tmp <- tmp[!CCAA == "Total", ]
+      if (!is.null(input$ccaa)) {
+        tmp <- tmp[tmp$CCAA %in% input$ccaa]
+      }
     }
     if (input$choose_data %in% c("Fallecidos", "Deaths")) {my_col <- "total_falle"}
     else if (input$choose_data %in% c("Casos", "Cases")) {my_col <- "total_casos"}
