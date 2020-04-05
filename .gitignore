@@ -1,2 +1,4 @@
 rsconnect/
 deployment.R
+debug.R
+.Rhistory
