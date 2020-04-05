@@ -1,4 +1,9 @@
 
+# For the inputs and texts across the whole app, there is a spanish and english version.
+# When changing to a language the corresponding inputs are updated. 
+# Suffix "en" stands for english, and "es" for spanish. 
+
+# -------------- App header 
 header_es <- "COVID-19 en España"
 header_en <- "COVID-19 in Spain"
 
@@ -7,6 +12,7 @@ descr1_en <- "Credits for the data:"
 descr2_es <- "Esta app Shiny:"
 descr2_en <- "This Shiny app:"
 
+# -------------- Inputs
 choose_data_label_es <- "Elige datos"
 choose_data_label_en <- "Choose data"
 choose_data_choices_es <- c("Casos totales", "Casos activos", "Altas", "Fallecidos", "Hospitalizados")
@@ -27,9 +33,3 @@ stat_choices_en <- c("Cumulative", "New per day")
 
 ccaa_label_es <- "Filtro CCAA"
 ccaa_label_en <- "Filter CCAA"
-
-choose_lan_label_es <- "Elige idioma"
-choose_lan_choices_es <- c("ES", "EN")
-
-descr_en <- paste0("Credits go to the contributors of https://github.com/datadista/datasets for updating the daily data. ",
-                   "Github repo for this app: https://github.com/l47y/COVID19-Spain")

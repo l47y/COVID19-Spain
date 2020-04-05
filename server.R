@@ -6,6 +6,7 @@ source("config.R")
 
 shinyServer(function(input, output, session) {
   
+  # ------------------ Load dataset 
   data_list <- list(
     "altas" = read_csv(url("https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_altas_long.csv")),
     "casos" = read_csv(url("https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_casos_long.csv")),
@@ -13,10 +14,12 @@ shinyServer(function(input, output, session) {
     "hospi" = read_csv(url("https://raw.githubusercontent.com/datadista/datasets/master/COVID%2019/ccaa_covid19_hospitalizados_long.csv"))
   )
   my_data <- join_data(data_list)
-  current_lan <- reactiveVal("ES")
   
+  # ------------------ Reactive values and initial configurations
+  current_lan <- reactiveVal("ES")
   shinyjs::hide("ccaa")
   
+  # ------------------ When "CCAA" is selected, show the select input for CCAAs
   observe ({
     if (input$total_or_ccaa != "Total") {
       shinyjs::show("ccaa")
@@ -25,8 +28,7 @@ shinyServer(function(input, output, session) {
     }
   })
   
- 
-  
+  # ------------------ Change input labels/choices based on language selection
   observeEvent(input$lan_en, {
     current_lan("EN")
     html("app_header", html = header_en)
@@ -51,6 +53,7 @@ shinyServer(function(input, output, session) {
     updateCheckboxInput(session, "relative_change", label = relative_change_label_es)
   })
   
+  # ------------------ Produce axis labels and plot title based on language and inputs
   get_plot_infos <- reactive({
     if (current_lan() == "ES") {
       my_choices <- choose_data_choices_es
@@ -86,10 +89,13 @@ shinyServer(function(input, output, session) {
     list(title=title, yaxis=yaxis, xaxis=xaxis)
   })
   
+  
+  
+  # ------------------ Main plot
   output$mainplot <- renderPlotly({
     tmp <- copy(my_data)
- 
     
+    # Filter data based on CCAA selection (or only total)
     if (input$total_or_ccaa == "Total") {
       tmp <- tmp[CCAA == "Total", ]
     } else {
@@ -98,6 +104,7 @@ shinyServer(function(input, output, session) {
       }
     }
     
+    # Take the corresponding language vector 
     if (current_lan() == "ES") {
       my_choices <- choose_data_choices_es
       my_choices_stat <- stat_choices_es
@@ -107,14 +114,15 @@ shinyServer(function(input, output, session) {
       my_choices_stat <- stat_choices_en
     }
     
+    # Based on the selection of "choose_data", define the column which will be used
     if (input$choose_data == my_choices[1]) {my_col <- "total_casos"}
     else if (input$choose_data == my_choices[2]) {my_col <- "activos"}
     else if (input$choose_data == my_choices[3]) {my_col <- "total_altas"}
     else if (input$choose_data == my_choices[4]) {my_col <- "total_falle"}
     else if (input$choose_data == my_choices[5]) {my_col <- "total_hospi"}
-    
     tmp[, total := tmp[[my_col]]]
     
+    # Define lag variables and relative change variables 
     tmp[, lag_total := c(NA, total[-.N]), by=CCAA]
     tmp[, diff := total - lag_total] 
     tmp[, diff_lag := c(NA, diff[-.N]), by=CCAA]
@@ -123,6 +131,8 @@ shinyServer(function(input, output, session) {
     } else {
       tmp[, diff_rel := ((total / lag_total) * 100) - rep(100, nrow(tmp))]
     }
+    
+    # Based on the state of the inputs "stat" and "relative_change", determine which column will be shown
     if (input$relative_change == TRUE) {
       show_col <- "diff_rel"
     } else {
@@ -132,11 +142,12 @@ shinyServer(function(input, output, session) {
         show_col <- "total"
       }
     }
+    
+    # Draw plotly bar plot
     infos <- get_plot_infos()
     plot_ly(x = tmp$fecha, y = tmp[[show_col]], color = tmp$CCAA, type="bar") %>% 
       layout(title = infos$title, 
              xaxis = list(title = infos$xaxis, tickmode='linear'), 
              yaxis = list(title = infos$yaxis))
   })
-  
 })

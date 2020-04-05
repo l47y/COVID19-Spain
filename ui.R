@@ -5,11 +5,13 @@ library(shinyjs)
 library(shinyWidgets)
 source("config.R")
 
-shinyUI(fluidPage(theme = shinytheme("flatly"),
+shinyUI(fluidPage(
+  
+  theme = shinytheme("flatly"),
   includeCSS("www/styles.css"),
   useShinyjs(),
-  #theme = shinytheme("cerulean"),
   
+  # ------------------ App header and language button
   fluidRow(
     column(
       10,
@@ -29,6 +31,7 @@ shinyUI(fluidPage(theme = shinytheme("flatly"),
     )
   ),
   
+  # ------------------ Description lines in upper part of the App
   fluidRow(
     fluidRow(
       column(2, 
@@ -51,6 +54,7 @@ shinyUI(fluidPage(theme = shinytheme("flatly"),
     style="margin-bottom:4%; margin-top:1%"
   ),
   
+  # ------------------ Left column with inputs
   fluidRow(
     column(
       2, 
@@ -85,6 +89,8 @@ shinyUI(fluidPage(theme = shinytheme("flatly"),
         )
       )
     ),
+    
+    # ------------------ Right column with plot
     column(
       10, 
       addSpinner(
