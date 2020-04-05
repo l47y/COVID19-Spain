@@ -5,10 +5,10 @@ library(shinyjs)
 library(shinyWidgets)
 source("config.R")
 
-shinyUI(fluidPage(
+shinyUI(fluidPage(theme = shinytheme("flatly"),
   includeCSS("www/styles.css"),
   useShinyjs(),
-  theme = shinytheme("cerulean"),
+  #theme = shinytheme("cerulean"),
   
   fluidRow(
     column(
@@ -87,9 +87,13 @@ shinyUI(fluidPage(
     ),
     column(
       10, 
-      plotlyOutput(
-        "mainplot",
-        height=800
+      addSpinner(
+        plotlyOutput(
+          "mainplot",
+          height=800
+        ),
+        spin = "circle", 
+        color = "#112446"
       )
     )
   )
