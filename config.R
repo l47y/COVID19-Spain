@@ -1,7 +1,18 @@
+library(data.table)
+library(magrittr)
+library(readr)
+library(shiny)
+library(shinythemes)
+library(plotly)
+library(shinyjs)
+library(shinyWidgets)
+source("helpers.R")
+
 
 # For the inputs and texts across the whole app, there is a spanish and english version.
 # When changing to a language the corresponding inputs are updated. 
 # Suffix "en" stands for english, and "es" for spanish. 
+
 
 # -------------- App header 
 header_es <- "COVID-19 en España"

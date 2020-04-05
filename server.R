@@ -1,7 +1,3 @@
-library(data.table)
-library(magrittr)
-library(readr)
-source("helpers.R")
 source("config.R")
 
 shinyServer(function(input, output, session) {

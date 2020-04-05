@@ -1,8 +1,3 @@
-library(shiny)
-library(shinythemes)
-library(plotly)
-library(shinyjs)
-library(shinyWidgets)
 source("config.R")
 
 shinyUI(fluidPage(
