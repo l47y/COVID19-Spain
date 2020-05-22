@@ -18,7 +18,10 @@ join_data <- function(data_list) {
   tmp3[is.na(total_altas), total_altas := 0]
   tmp3[is.na(total_hospi), total_hospi := 0]
   tmp3[, activos := total_casos - (total_falle + total_altas)]
-  return (tmp3)
+  total <- tmp3[, lapply(.SD, sum, na.rm=TRUE), by=fecha, .SDcols=c(setdiff(colnames(tmp3), c("CCAA", "fecha"))) ]
+  total[, CCAA := "Total"]
+  final <- rbindlist(list(tmp3, total), use.names = TRUE)
+  return (final)
 }
 
 # data_list <- list(
