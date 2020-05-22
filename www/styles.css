@@ -11,11 +11,16 @@ body {
 
 .app_descr1 {
   text-align: left;
-  font-size: 24px;
+  font-size: 24dp;
   /*margin-bottom: 5%;*/
 }
 .app_descr2 {
   text-align: left;
-  font-size: 24px;
+  font-size: 24dp;
   margin-bottom: 5%;
+}
+
+.plot_div {
+  height: 100%;
+  width: 100%;
 }

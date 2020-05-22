@@ -9,7 +9,7 @@ shinyUI(fluidPage(
   # ------------------ App header and language button
   fluidRow(
     column(
-      10,
+      8,
       tags$div(id="app_header", header_es, style="font-size: 48px;")
     ), 
     column(
@@ -30,20 +30,20 @@ shinyUI(fluidPage(
   fluidRow(
     fluidRow(
       column(2, 
-         tags$div(id="app_descr1", descr1_es, style="font-size: 24px; text-align: right;")
+         tags$div(id="app_descr1", descr1_es, style="font-size: 48dp; text-align: right;")
       ),
       column(2, 
          tags$div(id="app_descr1_link", tags$a(href="https://github.com/l47y/COVID19-Spain", "click"), 
-                  style="font-size: 24px; text-align_left;")
+                  style="font-size: 36dp; text-align_left;")
       )
     ),
     fluidRow(
       column(2, 
-             tags$div(id="app_descr2", descr2_es, style="font-size: 24px; text-align: right;")
+             tags$div(id="app_descr2", descr2_es, style="font-size: 36dp; text-align: right;")
       ),
       column(2, 
              tags$div(id="app_descr2_link", tags$a(href="https://github.com/l47y/COVID19-Spain", "click"), 
-                      style="font-size: 24px; text-align:left")
+                      style="font-size: 36dp; text-align:left")
       )
     ),
     style="margin-bottom:4%; margin-top:1%"
@@ -88,13 +88,16 @@ shinyUI(fluidPage(
     # ------------------ Right column with plot
     column(
       10, 
-      addSpinner(
-        plotlyOutput(
-          "mainplot",
-          height=800
-        ),
-        spin = "circle", 
-        color = "#112446"
+      shiny::div(
+        id = "plot_div",
+        addSpinner(
+          plotlyOutput(
+            "mainplot",
+            height="100%",
+          ),
+          spin = "circle", 
+          color = "#112446"
+        )
       )
     )
   )
